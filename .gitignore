@@ -1,0 +1,5 @@
+.gradle/
+.idea/
+build/
+report/
+!gradle-wrapper.jar
