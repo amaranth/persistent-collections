@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent.fingertree
+package com.probablycoding.persistent.impl.fingertree
 
 class FingerTree<T, M> private constructor(val measured: Measured<T, M>, private val front: Digit<T, M>,
                                            private val middle: FingerTree<Node<T, M>, M>?,
@@ -50,7 +50,7 @@ class FingerTree<T, M> private constructor(val measured: Measured<T, M>, private
         }
     }
 
-    fun dropUntil(predicate: (M) -> Boolean) : FingerTree<T, M> {
+    fun dropUntil(predicate: (M) -> Boolean): FingerTree<T, M> {
         return split(predicate).second
     }
 
@@ -177,7 +177,7 @@ class FingerTree<T, M> private constructor(val measured: Measured<T, M>, private
         return create(front.tail(), middle, back)
     }
 
-    fun takeUntil(predicate: (M) -> Boolean) : FingerTree<T, M> {
+    fun takeUntil(predicate: (M) -> Boolean): FingerTree<T, M> {
         return split(predicate).first
     }
 
@@ -217,13 +217,13 @@ class FingerTree<T, M> private constructor(val measured: Measured<T, M>, private
         private fun <T, M> makeNodes(middle: FingerTree<Node<T, M>, M>, front: Digit<T, M>, back: Digit<T, M>): FingerTree<Node<T, M>, M> {
             val elements = (front.asSequence() + back.descendingIterator().asSequence()).toList()
             return when (elements.size) {
-                2 -> middle.append(Node.of(front.measured, elements[0], elements[1]))
-                3 -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2]))
-                4 -> middle.append(Node.of(front.measured, elements[0], elements[1])).append(Node.of(front.measured, elements[2], elements[3]))
-                5 -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2])).append(Node.of(front.measured, elements[3], elements[4]))
-                6 -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2])).append(Node.of(front.measured, elements[3], elements[4], elements[5]))
-                7 -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2])).append(Node.of(front.measured, elements[3], elements[4])).append(Node.of(front.measured, elements[5], elements[6]))
-                8 -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2])).append(Node.of(front.measured, elements[3], elements[4], elements[5])).append(Node.of(front.measured, elements[6], elements[7]))
+                2    -> middle.append(Node.of(front.measured, elements[0], elements[1]))
+                3    -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2]))
+                4    -> middle.append(Node.of(front.measured, elements[0], elements[1])).append(Node.of(front.measured, elements[2], elements[3]))
+                5    -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2])).append(Node.of(front.measured, elements[3], elements[4]))
+                6    -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2])).append(Node.of(front.measured, elements[3], elements[4], elements[5]))
+                7    -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2])).append(Node.of(front.measured, elements[3], elements[4])).append(Node.of(front.measured, elements[5], elements[6]))
+                8    -> middle.append(Node.of(front.measured, elements[0], elements[1], elements[2])).append(Node.of(front.measured, elements[3], elements[4], elements[5])).append(Node.of(front.measured, elements[6], elements[7]))
                 else -> throw IllegalStateException("Nodes must have 2 or 3 elements")
             }
         }

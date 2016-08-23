@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent
+package com.probablycoding.persistent.impl
 
 class PersistentHashSet<E> private constructor(private val map: PersistentHashMap<E, Int>) : AbstractSet<E>() {
     override val size = map.size

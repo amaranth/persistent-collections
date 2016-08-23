@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent
+package com.probablycoding.persistent.impl
+
+import com.probablycoding.persistent.ImmutableSet
+import com.probablycoding.persistent.toImmutableSet
 
 abstract class AbstractSet<E> : AbstractCollection<E>(), ImmutableSet<E> {
     override fun addAll(elements: Collection<E>): ImmutableSet<E> {

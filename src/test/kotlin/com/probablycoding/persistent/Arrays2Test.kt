@@ -15,6 +15,10 @@
  */
 package com.probablycoding.persistent
 
+import com.probablycoding.persistent.impl.add
+import com.probablycoding.persistent.impl.addAll
+import com.probablycoding.persistent.impl.descendingIterator
+import com.probablycoding.persistent.impl.removeAt
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.NoSuchElementException

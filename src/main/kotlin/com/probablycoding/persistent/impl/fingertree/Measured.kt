@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent
+package com.probablycoding.persistent.impl.fingertree
 
-data class Entry<out K, out V>(override val key: K, override val value: V) : Map.Entry<K, V> {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Map.Entry<*, *>) return false
+interface Measured<E, M> {
+    val monoid: Monoid<M>
+    val zero: M
+        get() = monoid.zero
 
-        return key == other.key && value == other.value
+    fun measure(element: E): M
+
+    fun sum(a: M, b: M): M {
+        return monoid.sum(a, b)
     }
 
-    override fun hashCode(): Int {
-        return (key?.hashCode() ?: 0) xor (value?.hashCode() ?: 0)
-    }
+    fun node(): Measured<Node<E, M>, M> {
+        return object : Measured<Node<E, M>, M> {
+            override val monoid = this@Measured.monoid
 
-    override fun toString(): String {
-        return "$key=$value"
+            override fun measure(element: Node<E, M>): M {
+                return element.measure
+            }
+        }
     }
 }

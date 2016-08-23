@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent.fingertree
+package com.probablycoding.persistent.impl.fingertree
 
-interface Measured<E, M> {
-    val monoid: Monoid<M>
-    val zero: M
-        get() = monoid.zero
+interface Monoid<A> {
+    val zero: A
 
-    fun measure(element: E): M
+    fun sum(a: A, b: A): A
 
-    fun sum(a: M, b: M): M {
-        return monoid.sum(a, b)
-    }
+    fun <B> compose(other: Monoid<B>): Monoid<Pair<A, B>> {
+        return object : Monoid<Pair<A, B>> {
+            override val zero = Pair(this@Monoid.zero, other.zero)
 
-    fun node(): Measured<Node<E, M>, M> {
-        return object : Measured<Node<E, M>, M> {
-            override val monoid = this@Measured.monoid
-
-            override fun measure(element: Node<E, M>): M {
-                return element.measure
+            override fun sum(a: Pair<A, B>, b: Pair<A, B>): Pair<A, B> {
+                return Pair(this@Monoid.sum(a.first, b.first), other.sum(a.second, b.second))
             }
         }
     }

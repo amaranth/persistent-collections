@@ -15,6 +15,8 @@
  */
 package com.probablycoding.persistent
 
+import com.probablycoding.persistent.impl.PersistentHashMap
+
 class PersistentHashMapTest : AbstractMapTest(true) {
     override fun <K, V> buildMap(vararg entries: Pair<K, V>): PersistentHashMap<K, V> {
         return PersistentHashMap.of(*entries)

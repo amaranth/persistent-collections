@@ -15,6 +15,7 @@
  */
 package com.probablycoding.persistent
 
+import com.probablycoding.persistent.impl.PersistentTreeMap
 import java.util.Comparator
 
 class PersistentTreeMapTest : AbstractSortedMapTest() {

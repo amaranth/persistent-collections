@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent
+package com.probablycoding.persistent.impl
 
+import com.probablycoding.persistent.ImmutableSortedMap
+import com.probablycoding.persistent.ImmutableSortedSet
 import java.util.Comparator
 
-abstract class AbstractSortedMap<K, V>: AbstractMap<K, V>(), ImmutableSortedMap<K, V> {
+abstract class AbstractSortedMap<K, V> : AbstractMap<K, V>(), ImmutableSortedMap<K, V> {
     abstract val comparator: Comparator<in K>
     override val entries: ImmutableSortedSet<Map.Entry<K, V>>
         get() = ImmutableSortedEntrySet(this)

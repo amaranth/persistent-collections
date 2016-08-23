@@ -18,6 +18,11 @@
 
 package com.probablycoding.persistent
 
+import com.probablycoding.persistent.impl.PersistentHashMap
+import com.probablycoding.persistent.impl.PersistentHashSet
+import com.probablycoding.persistent.impl.PersistentTreeSet
+import com.probablycoding.persistent.impl.PersistentVector
+
 @Suppress("UNCHECKED_CAST")
 inline fun <T, K, V, M : ImmutableMap<in K, in V>> Sequence<T>.associateImmutableTo(destination: M, transform: (T) -> Pair<K, V>): M {
     // TODO: Is there a way to speed this up without a public transient type?

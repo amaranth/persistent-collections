@@ -15,6 +15,8 @@
  */
 package com.probablycoding.persistent
 
+import com.probablycoding.persistent.impl.PersistentVector
+
 class PersistentVectorTest() : AbstractListTest() {
     override fun <E> build(vararg elements: E): PersistentVector<E> {
         return PersistentVector.of(*elements)

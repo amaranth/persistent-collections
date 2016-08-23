@@ -1,6 +1,4 @@
-import nl.javadude.gradle.plugins.license.License
 import nl.javadude.gradle.plugins.license.LicenseExtension
-import nl.javadude.gradle.plugins.license.LicensePlugin
 
 buildscript {
     repositories {

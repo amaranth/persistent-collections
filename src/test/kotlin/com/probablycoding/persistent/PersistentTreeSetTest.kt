@@ -15,6 +15,8 @@
  */
 package com.probablycoding.persistent
 
+import com.probablycoding.persistent.impl.PersistentTreeSet
+
 class PersistentTreeSetTest : AbstractSortedSetTest() {
     override fun <E> build(vararg elements: E): PersistentTreeSet<E> {
         return PersistentTreeSet.of(*(elements as Array<Comparable<Any?>>)) as PersistentTreeSet<E>

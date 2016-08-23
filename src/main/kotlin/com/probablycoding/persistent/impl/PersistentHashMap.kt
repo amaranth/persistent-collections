@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent
+package com.probablycoding.persistent.impl
 
 import java.util.NoSuchElementException
 
@@ -70,7 +70,7 @@ class PersistentHashMap<K, V> private constructor(size: Int, private val marker:
         return PersistentHashMap(size, Any(), root)
     }
 
-    private sealed class Node<K, V>(val marker: Any?): Iterable<Map.Entry<K, V>> {
+    private sealed class Node<K, V>(val marker: Any?) : Iterable<Map.Entry<K, V>> {
         data class Result<K, V>(val changed: Int, val node: Node<K, V>?)
 
         abstract fun get(shift: Int, hash: Int, key: K): Map.Entry<K, V>?
@@ -193,7 +193,7 @@ class PersistentHashMap<K, V> private constructor(size: Int, private val marker:
                     val (changed, child) = children[index].remove(marker, shift + BITS, hash, key)
 
                     if (child == null && children.size == 1 && leaves.isEmpty()) {
-                            return Result(-1, null)
+                        return Result(-1, null)
                     } else if (child == null) {
                         return Result(-1, Bitmap(marker, clear(childMap, bit), leafMap, children.removeAt(index),
                                                  leaves))
@@ -226,7 +226,7 @@ class PersistentHashMap<K, V> private constructor(size: Int, private val marker:
                     private var leafCursor = 0
 
                     override fun hasNext(): Boolean {
-                        return leafCursor < leaves.size ||(childIterator != null && childIterator!!.hasNext()) ||
+                        return leafCursor < leaves.size || (childIterator != null && childIterator!!.hasNext()) ||
                                childCursor < children.size
                     }
 

@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent
+package com.probablycoding.persistent.impl
+
+import com.probablycoding.persistent.ImmutableCollection
+import com.probablycoding.persistent.ImmutableMap
+import com.probablycoding.persistent.ImmutableSet
 
 abstract class AbstractMap<K, V> : ImmutableMap<K, V> {
     override val entries: ImmutableSet<Map.Entry<K, V>>

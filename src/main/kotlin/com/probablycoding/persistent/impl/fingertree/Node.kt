@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent.fingertree
+package com.probablycoding.persistent.impl.fingertree
 
-import com.probablycoding.persistent.descendingIterator
-import com.probablycoding.persistent.head
-import com.probablycoding.persistent.tail
+import com.probablycoding.persistent.impl.descendingIterator
+import com.probablycoding.persistent.impl.head
+import com.probablycoding.persistent.impl.tail
 
 class Node<T, M> private constructor(val measured: Measured<T, M>, private val elements: Array<T>) : Iterable<T> {
     val measure: M by lazy {

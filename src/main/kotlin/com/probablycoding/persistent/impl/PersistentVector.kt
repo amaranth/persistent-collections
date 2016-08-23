@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent
+package com.probablycoding.persistent.impl
 
 import java.util.RandomAccess
 
@@ -152,7 +152,7 @@ class PersistentVector<E> private constructor(size: Int, private val marker: Any
             }
         }
 
-        class Leaf<E>(marker: Any?, val elements: Array<E>): Node<E>(marker, 0) {
+        class Leaf<E>(marker: Any?, val elements: Array<E>) : Node<E>(marker, 0) {
             override fun addTail(marker: Any?, tail: Array<E>): Node<E> {
                 if (elements.isEmpty()) {
                     return Leaf(marker, tail)

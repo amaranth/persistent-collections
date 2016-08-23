@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.probablycoding.persistent.fingertree
+package com.probablycoding.persistent.impl
 
-interface Monoid<A> {
-    val zero: A
+data class Entry<out K, out V>(override val key: K, override val value: V) : Map.Entry<K, V> {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Map.Entry<*, *>) return false
 
-    fun sum(a: A, b: A): A
+        return key == other.key && value == other.value
+    }
 
-    fun <B> compose(other: Monoid<B>): Monoid<Pair<A, B>> {
-        return object : Monoid<Pair<A, B>> {
-            override val zero = Pair(this@Monoid.zero, other.zero)
+    override fun hashCode(): Int {
+        return (key?.hashCode() ?: 0) xor (value?.hashCode() ?: 0)
+    }
 
-            override fun sum(a: Pair<A, B>, b: Pair<A, B>): Pair<A, B> {
-                return Pair(this@Monoid.sum(a.first, b.first), other.sum(a.second, b.second))
-            }
-        }
+    override fun toString(): String {
+        return "$key=$value"
     }
 }

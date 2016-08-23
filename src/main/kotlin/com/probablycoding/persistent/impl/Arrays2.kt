@@ -15,7 +15,7 @@
  */
 @file:JvmName("Arrays2")
 
-package com.probablycoding.persistent
+package com.probablycoding.persistent.impl
 
 import java.util.NoSuchElementException
 

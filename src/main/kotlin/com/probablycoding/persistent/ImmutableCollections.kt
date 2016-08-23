@@ -17,6 +17,9 @@
 
 package com.probablycoding.persistent
 
+import com.probablycoding.persistent.impl.PersistentHashMap
+import com.probablycoding.persistent.impl.PersistentVector
+
 fun <T> emptyImmutableList(): ImmutableList<T> {
     return PersistentVector.empty()
 }

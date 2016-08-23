@@ -15,6 +15,7 @@
  */
 package com.probablycoding.persistent
 
+import com.probablycoding.persistent.impl.Entry
 import org.junit.Assert.*
 import org.junit.Test
 
