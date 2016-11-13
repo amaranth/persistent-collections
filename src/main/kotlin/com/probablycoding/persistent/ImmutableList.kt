@@ -23,8 +23,11 @@ interface ImmutableList<E> : ImmutableCollection<E>, List<E> {
     override fun removeAll(elements: Collection<E>): ImmutableList<E>
     override fun retainAll(elements: Collection<E>): ImmutableList<E>
 
+    override fun subList(fromIndex: Int, toIndex: Int): ImmutableList<E>
+
     fun add(index: Int, element: E): ImmutableList<E>
     fun addAll(index: Int, elements: Collection<E>): ImmutableList<E>
     fun removeAt(index: Int): ImmutableList<E>
+    fun reversed(): ImmutableList<E>
     operator fun set(index: Int, element: E): ImmutableList<E>
 }

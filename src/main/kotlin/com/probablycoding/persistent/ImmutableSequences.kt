@@ -22,27 +22,7 @@ import com.probablycoding.persistent.impl.PersistentHashMap
 import com.probablycoding.persistent.impl.PersistentHashSet
 import com.probablycoding.persistent.impl.PersistentTreeSet
 import com.probablycoding.persistent.impl.PersistentVector
-
-@Suppress("UNCHECKED_CAST")
-inline fun <T, K, V, M : ImmutableMap<in K, in V>> Sequence<T>.associateImmutableTo(destination: M, transform: (T) -> Pair<K, V>): M {
-    // TODO: Is there a way to speed this up without a public transient type?
-    return fold(destination) { map, element ->
-        val pair = transform(element)
-        map.put(pair.first, pair.second) as M
-    }
-}
-
-@Suppress("UNCHECKED_CAST")
-inline fun <T, K, M : ImmutableMap<in K, in T>> Sequence<T>.associateByTo(destination: M, keySelector: (T) -> K): M {
-    // TODO: Is there a way to speed this up without a public transient type?
-    return fold(destination) { map, element -> map.put(keySelector(element), element) as M }
-}
-
-@Suppress("UNCHECKED_CAST")
-inline fun <T, K, V, M : ImmutableMap<in K, in V>> Sequence<T>.associateByTo(destination: M, keySelector: (T) -> K, valueTransform: (T) -> V): M {
-    // TODO: Is there a way to speed this up without a public transient type?
-    return fold(destination) { map, element -> map.put(keySelector(element), valueTransform(element)) as M }
-}
+import java.util.Comparator
 
 fun <T, K, V> Sequence<T>.associateImmutable(transform: (T) -> Pair<K, V>): ImmutableMap<K, V> {
     return PersistentHashMap.fromSequence(this, transform)
@@ -66,4 +46,8 @@ fun <T> Sequence<T>.toImmutableSet(): ImmutableSet<T> {
 
 fun <T : Comparable<T>> Sequence<T>.toImmutableSortedSet(): ImmutableSortedSet<T> {
     return PersistentTreeSet.fromSequence(this)
+}
+
+fun <T> Sequence<T>.toImmutableSortedSet(comparator: Comparator<in T>): ImmutableSortedSet<T> {
+    return PersistentTreeSet.fromSequence(comparator, this)
 }

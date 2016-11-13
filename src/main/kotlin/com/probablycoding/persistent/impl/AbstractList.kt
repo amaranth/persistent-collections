@@ -16,6 +16,7 @@
 package com.probablycoding.persistent.impl
 
 import com.probablycoding.persistent.ImmutableList
+import com.probablycoding.persistent.emptyImmutableList
 import com.probablycoding.persistent.toImmutableList
 import java.util.NoSuchElementException
 
@@ -33,13 +34,7 @@ abstract class AbstractList<E> : AbstractCollection<E>(), ImmutableList<E> {
     }
 
     override fun lastIndexOf(element: E): Int {
-        for (index in lastIndex downTo 0) {
-            if (get(index) == element) {
-                return index
-            }
-        }
-
-        return -1
+        return (lastIndex downTo 0).firstOrNull { get(it) == element } ?: -1
     }
 
     override fun listIterator(): ListIterator<E> {
@@ -81,7 +76,7 @@ abstract class AbstractList<E> : AbstractCollection<E>(), ImmutableList<E> {
         }
     }
 
-    override fun subList(fromIndex: Int, toIndex: Int): List<E> {
+    override fun subList(fromIndex: Int, toIndex: Int): ImmutableList<E> {
         rangeCheckSubList(fromIndex, toIndex)
 
         if (fromIndex == 0 && toIndex == size) {
@@ -96,7 +91,12 @@ abstract class AbstractList<E> : AbstractCollection<E>(), ImmutableList<E> {
     }
 
     override fun remove(element: E): ImmutableList<E> {
-        return asSequence().filterNot { it == element }.toImmutableList()
+        val index = indexOf(element)
+        if (index < 0) {
+            return this
+        } else {
+            return removeAt(index)
+        }
     }
 
     override fun removeAll(elements: Collection<E>): ImmutableList<E> {
@@ -123,6 +123,10 @@ abstract class AbstractList<E> : AbstractCollection<E>(), ImmutableList<E> {
         rangeCheck(index)
 
         return (asSequence().take(index) + asSequence().drop(index + 1)).toImmutableList()
+    }
+
+    override fun reversed(): ImmutableList<E> {
+        return ImmutableReversedList(this)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -161,11 +165,43 @@ abstract class AbstractList<E> : AbstractCollection<E>(), ImmutableList<E> {
         require(fromIndex <= toIndex) { "fromIndex($fromIndex) > toIndex($toIndex)" }
     }
 
+    private class ImmutableReversedList<E>(private val parent: ImmutableList<E>) : AbstractList<E>() {
+        override val size = parent.size
+
+        override fun get(index: Int): E {
+            rangeCheck(index)
+
+            return parent[size - index]
+        }
+
+        override fun add(element: E): ImmutableList<E> {
+            // We could just prepend to the parent but that makes this O(n) so instead do
+            // the proper reverse so this is amortized O(1) as expected
+            return asSequence().toImmutableList().add(element)
+        }
+
+        override fun clear(): ImmutableList<E> {
+            return emptyImmutableList()
+        }
+
+        override fun set(index: Int, element: E): ImmutableList<E> {
+            rangeCheck(index)
+
+            return ImmutableReversedList(parent.set(size - index, element))
+        }
+
+        override fun reversed(): ImmutableList<E> {
+            return parent
+        }
+    }
+
     private class ImmutableSubList<E>(private val parent: ImmutableList<E>, private val fromIndex: Int,
                                       private val toIndex: Int) : AbstractList<E>() {
         override val size = toIndex - fromIndex
 
         override fun get(index: Int): E {
+            rangeCheck(index)
+
             return parent[index + fromIndex]
         }
 
@@ -174,10 +210,12 @@ abstract class AbstractList<E> : AbstractCollection<E>(), ImmutableList<E> {
         }
 
         override fun clear(): ImmutableList<E> {
-            return ImmutableSubList(parent.clear(), 0, 0)
+            return emptyImmutableList()
         }
 
         override fun set(index: Int, element: E): ImmutableList<E> {
+            rangeCheck(index)
+
             return ImmutableSubList(parent.set(index + fromIndex, element), fromIndex, toIndex)
         }
     }
