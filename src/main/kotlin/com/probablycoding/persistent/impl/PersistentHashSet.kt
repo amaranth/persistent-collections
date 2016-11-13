@@ -32,7 +32,7 @@ class PersistentHashSet<E> private constructor(private val map: PersistentHashMa
     }
 
     override fun addAll(elements: Collection<E>): PersistentHashSet<E> {
-        return elements.fold(asTransient()) { set, element -> set.add(element) }.asPersistent()
+        return elements.fold(asTransient(), PersistentHashSet<E>::add).asPersistent()
     }
 
     override fun remove(element: E): PersistentHashSet<E> {
@@ -45,7 +45,7 @@ class PersistentHashSet<E> private constructor(private val map: PersistentHashMa
     }
 
     override fun removeAll(elements: Collection<E>): PersistentHashSet<E> {
-        return elements.fold(asTransient()) { set, element -> set.remove(element) }.asPersistent()
+        return elements.fold(asTransient(), PersistentHashSet<E>::remove).asPersistent()
     }
 
     override fun clear(): PersistentHashSet<E> {
@@ -73,7 +73,7 @@ class PersistentHashSet<E> private constructor(private val map: PersistentHashMa
         }
 
         fun <E> fromSequence(sequence: Sequence<E>): PersistentHashSet<E> {
-            return sequence.fold(empty<E>().asTransient()) { set, element -> set.add(element) }.asPersistent()
+            return sequence.fold(empty<E>().asTransient(), PersistentHashSet<E>::add).asPersistent()
         }
 
         fun <E> of(vararg elements: E): PersistentHashSet<E> {

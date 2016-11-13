@@ -22,16 +22,14 @@ abstract class AbstractSortedSet<E> : AbstractSet<E>(), ImmutableSortedSet<E> {
     abstract val comparator: Comparator<in E>
 
     override fun addAll(elements: Collection<E>): ImmutableSortedSet<E> {
-        return elements.fold(this as ImmutableSortedSet<E>) { set, element -> set.add(element) }
+        return elements.fold(this as ImmutableSortedSet<E>, ImmutableSortedSet<E>::add)
     }
 
     override fun remove(element: E): ImmutableSortedSet<E> {
         var result = clear()
-        for (item in this) {
-            if (item != element) {
-                result = result.add(item)
-            }
-        }
+        asSequence()
+            .filter { it != element }
+            .forEach { result = result.add(it) }
 
         return result
     }
@@ -40,11 +38,9 @@ abstract class AbstractSortedSet<E> : AbstractSet<E>(), ImmutableSortedSet<E> {
         val other = elements.toHashSet()
         var result = clear()
 
-        for (element in this) {
-            if (element !in other) {
-                result = result.add(element)
-            }
-        }
+        asSequence()
+            .filter { it !in other }
+            .forEach { result = result.add(it) }
 
         return result
     }
@@ -53,11 +49,9 @@ abstract class AbstractSortedSet<E> : AbstractSet<E>(), ImmutableSortedSet<E> {
         val other = elements.toHashSet()
         var result = clear()
 
-        for (element in this) {
-            if (element in other) {
-                result = result.add(element)
-            }
-        }
+        asSequence()
+            .filter { it in other }
+            .forEach { result = result.add(it) }
 
         return result
     }

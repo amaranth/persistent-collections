@@ -80,11 +80,11 @@ class PersistentTreeSet<E> private constructor(private val map: PersistentTreeMa
         }
 
         fun <E : Comparable<E>> fromSequence(sequence: Sequence<E>): PersistentTreeSet<E> {
-            return sequence.fold(empty()) { set, element -> set.add(element) }
+            return sequence.fold(empty(), PersistentTreeSet<E>::add)
         }
 
         fun <E> fromSequence(comparator: Comparator<in E>, sequence: Sequence<E>): PersistentTreeSet<E> {
-            return sequence.fold(empty(comparator)) { set, element -> set.add(element) }
+            return sequence.fold(empty(comparator), PersistentTreeSet<E>::add)
         }
 
         fun <E : Comparable<E>> of(vararg elements: E): PersistentTreeSet<E> {

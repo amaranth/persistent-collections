@@ -99,7 +99,7 @@ abstract class AbstractSortedMapTest(supportsNullValues: Boolean = true) : Abstr
     }
 
     @Test
-    fun compartorIsNullWhenNotSupplied() {
+    fun comparatorIsNullWhenNotSupplied() {
         val map = buildMap<Int, Int>()
         assertNull(map.comparator())
     }

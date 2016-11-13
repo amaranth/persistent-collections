@@ -191,7 +191,7 @@ class FingerTree<T, M> private constructor(val measured: Measured<T, M>, private
         }
 
         fun <T, M> fromSequence(measured: Measured<T, M>, sequence: Sequence<T>): FingerTree<T, M> {
-            return sequence.fold(empty(measured)) { tree, element -> tree.append(element) }
+            return sequence.fold(empty(measured), FingerTree<T, M>::append)
         }
 
         private fun <T, M> create(front: Digit<T, M>, middle: FingerTree<Node<T, M>, M>?, back: Digit<T, M>): FingerTree<T, M> {
