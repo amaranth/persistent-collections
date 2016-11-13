@@ -3,3 +3,4 @@
 build/
 report/
 !gradle-wrapper.jar
+.DS_Store
